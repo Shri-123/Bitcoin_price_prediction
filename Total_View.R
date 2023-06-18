@@ -12,20 +12,18 @@ f = read.csv("Bitcoin.csv")
 #print(summary(f))
 str(f)
 
-f$Date = as.Date(anytime(f$Date))
-f$Volume = gsub(',','',f$Volume)
+f$Date = as.Date(anytime(f$Date)) // CONVERTING THE DATES INTO DATE OBJECTS
+f$Volume = gsub(',','',f$Volume) // REPLACING THE COMMAS WITH EMPTY STRING I.E REVOMING COMMAS
 f$Market.Cap = gsub(',','',f$Market.Cap)
-f$Volume <- NULL
-f$Market.Cap = as.numeric(f$Market.Cap)
+f$Volume <- NULL                 // DROPPING VOLUME COLUMN
+f$Market.Cap = as.numeric(f$Market.Cap) // CONVERTING MARKET CAP INTO NUMERIC DATATYPE
 head(f)
 
-Train = xts(f[, -1], order.by=as.POSIXct(f$Date))
+Train = xts(f[, -1], order.by=as.POSIXct(f$Date)) // EXCLUDING FIRST COLUMN AND ORDERING ALL DATASET ACCORDING TO SORTED DATES
 head(Train)
 
-
-
-set.seed(123)
-index = sample(2, nrow(Train),replace = TRUE,prob=c(0.7,0.3))
+set.seed(123) // USED FOR RANDOM SPLITTING
+index = sample(2, nrow(Train),replace = TRUE,prob=c(0.7,0.3)) // SPLITTING DATA INTO TRAINING AND TESTING
 
 Training = Train[index==1,]
 Testing = Train[index==2,]
